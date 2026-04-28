@@ -12,42 +12,32 @@ target/
 .venv/
 venv/
 node_modules/
-.julia/
-.zig-cache/
+.mypy_cache/
+.pytest_cache/
+.gradle/
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
-*.swo
 
 # Environment
 .env
 .env.local
-.env.*
+*.env.*
 
 # Editors
 .vscode/
 .idea/
-*.sublime-project
-*.sublime-workspace
 
 # System files
 .DS_Store
 Thumbs.db
 
-# Coverage reports
+# Coverage
 coverage/
 htmlcov/
 .coverage
-
-# Package manager caches
-.npm/
-.yarn/
-.pip/
-.mypy_cache/
-.pytest_cache/
-.gradle/
 
 # Compressed files
 *.zip
