@@ -284,6 +284,14 @@ function clean_theme_scripts() {
         CLEAN_THEME_VERSION,
         true
     );
+    
+    // Localize script with AJAX and translation data
+    wp_localize_script( 'clean-theme-fab', 'cleanDentalVars', array(
+        'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+        'sendingText'   => __( 'Sending...', 'clean-dental' ),
+        'sentText'      => __( 'Sent!', 'clean-dental' ),
+        'errorText'     => __( 'Error. Please try again.', 'clean-dental' ),
+    ) );
 
     // Comment reply script
     if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

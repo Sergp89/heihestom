@@ -1,8 +1,7 @@
 /**
- * Floating Action Buttons (FAB) JavaScript
- * Handles expandable FAB with messenger, phone, and form buttons
+ * Floating Action Buttons (FAB) and Modal Functionality
  * 
- * @package Clean_Theme
+ * @package Clean_Dental
  */
 
 (function() {
@@ -11,109 +10,100 @@
     // DOM Elements
     const callbackFabMain = document.getElementById('callbackFabMain');
     const fabList = document.getElementById('fabList');
-    const scrollTopFab = document.getElementById('scrollTopFab');
     const fabFormBtn = document.getElementById('fabFormBtn');
     const feedbackModalOverlay = document.getElementById('feedbackModalOverlay');
     const feedbackModalClose = document.getElementById('feedbackModalClose');
+    const scrollTopFab = document.getElementById('scrollTopFab');
+    const fabContainer = document.querySelector('.fab-container');
 
-    let isFabOpen = false;
-    let ticking = false;
+    // Toggle FAB List
+    if (callbackFabMain && fabList) {
+        callbackFabMain.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            this.classList.toggle('active');
+            fabList.classList.toggle('open');
+        });
 
-    /**
-     * Toggle FAB list
-     */
-    function toggleFab() {
-        isFabOpen = !isFabOpen;
-        
-        if (callbackFabMain) {
-            callbackFabMain.classList.toggle('rotated', isFabOpen);
-            callbackFabMain.setAttribute('aria-expanded', isFabOpen.toString());
-        }
-        
-        if (fabList) {
-            fabList.classList.toggle('active', isFabOpen);
-        }
+        // Close FAB list when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!fabContainer.contains(event.target)) {
+                callbackFabMain.setAttribute('aria-expanded', 'false');
+                callbackFabMain.classList.remove('active');
+                fabList.classList.remove('open');
+            }
+        });
     }
 
-    /**
-     * Close FAB list
-     */
-    function closeFab() {
-        isFabOpen = false;
-        
-        if (callbackFabMain) {
-            callbackFabMain.classList.remove('rotated');
-            callbackFabMain.setAttribute('aria-expanded', 'false');
-        }
-        
-        if (fabList) {
-            fabList.classList.remove('active');
-        }
-    }
-
-    /**
-     * Open feedback modal
-     */
-    function openFeedbackModal() {
-        closeFab();
-        
-        if (feedbackModalOverlay) {
+    // Open Feedback Modal
+    if (fabFormBtn && feedbackModalOverlay) {
+        fabFormBtn.addEventListener('click', function() {
+            // Close FAB list first
+            if (callbackFabMain) {
+                callbackFabMain.setAttribute('aria-expanded', 'false');
+                callbackFabMain.classList.remove('active');
+            }
+            if (fabList) {
+                fabList.classList.remove('open');
+            }
+            
+            // Open modal
             feedbackModalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
             
-            // Focus first input
+            // Focus first input for accessibility
             const firstInput = feedbackModalOverlay.querySelector('input');
             if (firstInput) {
-                setTimeout(() => firstInput.focus(), 300);
+                setTimeout(() => firstInput.focus(), 100);
             }
-        }
+        });
     }
 
-    /**
-     * Close feedback modal
-     */
-    function closeFeedbackModal() {
-        if (feedbackModalOverlay) {
+    // Close Feedback Modal
+    if (feedbackModalClose && feedbackModalOverlay) {
+        feedbackModalClose.addEventListener('click', function() {
             feedbackModalOverlay.classList.remove('active');
             document.body.style.overflow = '';
-        }
+        });
+
+        // Close on overlay click
+        feedbackModalOverlay.addEventListener('click', function(event) {
+            if (event.target === this) {
+                this.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && feedbackModalOverlay.classList.contains('active')) {
+                feedbackModalOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
     }
 
-    /**
-     * Handle scroll events
-     */
-    function handleScroll() {
+    // Scroll to Top Button
+    let ticking = false;
+    
+    function toggleScrollTopButton() {
         if (!ticking) {
-            window.requestAnimationFrame(() => {
-                // Show/hide scroll to top button
-                if (scrollTopFab) {
-                    if (window.scrollY > 300) {
-                        scrollTopFab.classList.add('visible');
-                    } else {
-                        scrollTopFab.classList.remove('visible');
-                    }
+            window.requestAnimationFrame(function() {
+                if (window.scrollY > 300) {
+                    scrollTopFab.classList.add('visible');
+                } else {
+                    scrollTopFab.classList.remove('visible');
                 }
-                
                 ticking = false;
             });
-            
             ticking = true;
         }
     }
 
-    // Event Listeners
-    if (callbackFabMain) {
-        callbackFabMain.addEventListener('click', toggleFab);
-    }
-
-    // Form button opens modal
-    if (fabFormBtn) {
-        fabFormBtn.addEventListener('click', openFeedbackModal);
-    }
-
-    // Scroll to top
     if (scrollTopFab) {
-        scrollTopFab.addEventListener('click', () => {
+        window.addEventListener('scroll', toggleScrollTopButton, { passive: true });
+        
+        scrollTopFab.addEventListener('click', function() {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
@@ -121,61 +111,65 @@
         });
     }
 
-    // Close modal on close button click
-    if (feedbackModalClose) {
-        feedbackModalClose.addEventListener('click', closeFeedbackModal);
-    }
-
-    // Close modal on overlay click
-    if (feedbackModalOverlay) {
-        feedbackModalOverlay.addEventListener('click', (e) => {
-            if (e.target === feedbackModalOverlay) {
-                closeFeedbackModal();
-            }
-        });
-    }
-
-    // Close FAB when clicking outside
-    document.addEventListener('click', (e) => {
-        if (isFabOpen && 
-            fabList && 
-            callbackFabMain &&
-            !fabList.contains(e.target) && 
-            !callbackFabMain.contains(e.target)) {
-            closeFab();
-        }
-    });
-
-    // Scroll listener
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Close on ESC key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            if (isFabOpen) {
-                closeFab();
-            }
-            if (feedbackModalOverlay && feedbackModalOverlay.classList.contains('active')) {
-                closeFeedbackModal();
-            }
-        }
-    });
-
-    // Handle form submission
+    // Handle Form Submission
     const feedbackForm = document.querySelector('.feedback-form');
     if (feedbackForm) {
-        feedbackForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        feedbackForm.addEventListener('submit', function(event) {
+            event.preventDefault();
             
             // Get form data
-            const formData = new FormData(feedbackForm);
+            const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
             
             // Here you would typically send the data via AJAX
-            // For now, just show a success message
-            alert('Thank you! We will contact you shortly.');
-            closeFeedbackModal();
-            feedbackForm.reset();
+            // For now, we'll just show a success message
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = cleanDentalVars?.sendingText || 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Simulate AJAX request (replace with actual AJAX call)
+            setTimeout(() => {
+                submitBtn.textContent = cleanDentalVars?.sentText || 'Sent!';
+                submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                
+                // Reset form
+                this.reset();
+                
+                // Close modal after delay
+                setTimeout(() => {
+                    feedbackModalOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    
+                    // Reset button
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.style.background = '';
+                }, 2000);
+            }, 1000);
+        });
+    }
+
+    // Keyboard navigation for FAB items
+    if (fabList) {
+        const fabItems = fabList.querySelectorAll('.fab-item');
+        
+        fabItems.forEach((item, index) => {
+            item.addEventListener('keydown', function(event) {
+                if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                    event.preventDefault();
+                    let nextIndex;
+                    
+                    if (event.key === 'ArrowDown') {
+                        nextIndex = (index + 1) % fabItems.length;
+                    } else {
+                        nextIndex = (index - 1 + fabItems.length) % fabItems.length;
+                    }
+                    
+                    fabItems[nextIndex].focus();
+                }
+            });
         });
     }
 
