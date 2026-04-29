@@ -1,6 +1,6 @@
 /**
  * Mobile Menu JavaScript
- * Handles hamburger menu toggle and animations
+ * Handles hamburger menu toggle and animations with smooth transitions
  *
  * @package Clean_Theme
  * @since 1.0.0
@@ -11,49 +11,44 @@
 
     // DOM Elements
     const menuToggle = document.querySelector('.menu-toggle');
+    const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
     const mobileMenuPanel = document.querySelector('.mobile-menu-panel');
-    const menuOverlay = document.querySelector('.menu-overlay');
+    const mobileMenuClose = document.querySelector('.mobile-menu-close');
+    const floatingMenuBtn = document.querySelector('.floating-menu-btn');
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
     const body = document.body;
 
-    // Check if elements exist
-    if ( ! menuToggle || ! mobileMenuPanel ) {
-        return;
-    }
+    let isMenuOpen = false;
+    let ticking = false;
 
     /**
      * Toggle mobile menu
      */
     function toggleMenu() {
-        const isActive = menuToggle.classList.contains('active');
-
-        if ( isActive ) {
-            closeMenu();
-        } else {
-            openMenu();
-        }
-    }
-
-    /**
-     * Open mobile menu
-     */
-    function openMenu() {
-        menuToggle.classList.add('active');
-        mobileMenuPanel.classList.add('active');
+        isMenuOpen = !isMenuOpen;
         
-        if ( menuOverlay ) {
-            menuOverlay.classList.add('active');
+        if (menuToggle) {
+            menuToggle.classList.toggle('active', isMenuOpen);
         }
-
-        // Prevent body scroll when menu is open
-        body.style.overflow = 'hidden';
-
-        // Set aria-expanded
-        menuToggle.setAttribute('aria-expanded', 'true');
-
-        // Focus first menu item for accessibility
-        const firstMenuItem = mobileMenuPanel.querySelector('a');
-        if ( firstMenuItem ) {
-            setTimeout(() => firstMenuItem.focus(), 300);
+        
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.classList.toggle('active', isMenuOpen);
+        }
+        
+        // Handle body scroll
+        body.style.overflow = isMenuOpen ? 'hidden' : '';
+        
+        // Hide/show FAB button
+        if (floatingMenuBtn) {
+            if (isMenuOpen) {
+                floatingMenuBtn.classList.remove('visible');
+                floatingMenuBtn.classList.add('active');
+            } else {
+                floatingMenuBtn.classList.remove('active');
+                if (window.scrollY > 100) {
+                    floatingMenuBtn.classList.add('visible');
+                }
+            }
         }
     }
 
@@ -61,106 +56,138 @@
      * Close mobile menu
      */
     function closeMenu() {
-        menuToggle.classList.remove('active');
-        mobileMenuPanel.classList.remove('active');
+        isMenuOpen = false;
         
-        if ( menuOverlay ) {
-            menuOverlay.classList.remove('active');
+        if (menuToggle) {
+            menuToggle.classList.remove('active');
         }
-
-        // Restore body scroll
+        
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.classList.remove('active');
+        }
+        
         body.style.overflow = '';
-
-        // Set aria-expanded
-        menuToggle.setAttribute('aria-expanded', 'false');
-
-        // Return focus to menu toggle
-        menuToggle.focus();
-    }
-
-    /**
-     * Handle keyboard navigation
-     */
-    function handleKeyboard(e) {
-        // Close on Escape key
-        if ( e.key === 'Escape' && mobileMenuPanel.classList.contains('active') ) {
-            closeMenu();
+        
+        if (floatingMenuBtn) {
+            floatingMenuBtn.classList.remove('active');
+            if (window.scrollY > 100) {
+                floatingMenuBtn.classList.add('visible');
+            }
         }
     }
 
     /**
-     * Handle click outside menu
+     * Handle scroll events with requestAnimationFrame
      */
-    function handleOutsideClick(e) {
-        if ( 
-            mobileMenuPanel.classList.contains('active') &&
-            ! mobileMenuPanel.contains(e.target) &&
-            ! menuToggle.contains(e.target)
-        ) {
-            closeMenu();
-        }
-    }
-
-    /**
-     * Handle submenu toggle on mobile
-     */
-    function handleSubmenus() {
-        const menuItemsWithChildren = mobileMenuPanel.querySelectorAll('.menu-item-has-children > a');
-
-        menuItemsWithChildren.forEach((item) => {
-            item.addEventListener('click', function(e) {
-                const parent = this.parentElement;
-                const submenu = parent.querySelector('.sub-menu');
-
-                if ( submenu ) {
-                    // Toggle submenu visibility
-                    if ( submenu.style.display === 'block' ) {
-                        submenu.style.display = 'none';
+    function handleScroll() {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                // Show/hide scroll to top button
+                if (scrollTopBtn) {
+                    if (window.scrollY > 300) {
+                        scrollTopBtn.classList.add('visible');
                     } else {
-                        submenu.style.display = 'block';
-                    }
-
-                    // Prevent default link behavior if it's a #
-                    if ( this.getAttribute('href') === '#' ) {
-                        e.preventDefault();
+                        scrollTopBtn.classList.remove('visible');
                     }
                 }
+                
+                // Show/hide floating menu button (mobile only)
+                if (floatingMenuBtn && window.innerWidth <= 960 && !isMenuOpen) {
+                    if (window.scrollY > 100) {
+                        floatingMenuBtn.classList.add('visible');
+                    } else {
+                        floatingMenuBtn.classList.remove('visible');
+                    }
+                }
+                
+                ticking = false;
+            });
+            
+            ticking = true;
+        }
+    }
+
+    /**
+     * Smooth scroll to section
+     */
+    function scrollToSection(id) {
+        const element = document.getElementById(id);
+        if (element) {
+            const offset = window.innerWidth <= 960 ? 70 : 80;
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - offset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+            
+            closeMenu();
+        }
+    }
+
+    // Event Listeners
+    if (menuToggle) {
+        menuToggle.addEventListener('click', toggleMenu);
+    }
+
+    if (mobileMenuClose) {
+        mobileMenuClose.addEventListener('click', closeMenu);
+    }
+
+    if (mobileMenuOverlay) {
+        mobileMenuOverlay.addEventListener('click', (e) => {
+            if (e.target === mobileMenuOverlay) {
+                closeMenu();
+            }
+        });
+    }
+
+    if (floatingMenuBtn) {
+        floatingMenuBtn.addEventListener('click', toggleMenu);
+    }
+
+    if (scrollTopBtn) {
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
         });
     }
 
-    // Event Listeners
-    menuToggle.addEventListener('click', toggleMenu);
+    // Scroll listener with passive option for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Close on overlay click
-    if ( menuOverlay ) {
-        menuOverlay.addEventListener('click', closeMenu);
-    }
-
-    // Close on outside click
-    document.addEventListener('click', handleOutsideClick);
-
-    // Keyboard navigation
-    document.addEventListener('keydown', handleKeyboard);
-
-    // Handle submenus
-    handleSubmenus();
-
-    // Handle window resize
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            // Close menu if resizing to desktop
-            if ( window.innerWidth >= 1024 && mobileMenuPanel.classList.contains('active') ) {
-                closeMenu();
+    // Handle anchor links
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', (e) => {
+            const href = anchor.getAttribute('href');
+            if (href !== '#') {
+                e.preventDefault();
+                scrollToSection(href.substring(1));
             }
-        }, 250);
+        });
     });
 
-    // Initialize aria attributes
-    menuToggle.setAttribute('aria-expanded', 'false');
-    menuToggle.setAttribute('aria-controls', 'mobile-menu-panel');
-    menuToggle.setAttribute('aria-label', 'Toggle menu');
+    // Close menu on ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isMenuOpen) {
+            closeMenu();
+        }
+    });
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024 && isMenuOpen) {
+            closeMenu();
+        }
+    });
+
+    // Initialize aria attributes for accessibility
+    if (menuToggle) {
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Toggle menu');
+    }
 
 })();
