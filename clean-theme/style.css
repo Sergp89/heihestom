@@ -1,0 +1,524 @@
+/*
+Theme Name: Clean Theme
+Theme URI: https://example.com/clean-theme
+Author: Your Name
+Author URI: https://example.com
+Description: A clean, universal WordPress theme ready for content. Fully customizable through WordPress Customizer, Widgets, Menus, and Gutenberg editor. No hardcoded content or placeholders.
+Version: 1.0.0
+Requires at least: 5.8
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: clean-theme
+Tags: custom-background, custom-logo, custom-menu, featured-images, flexible-header, footer-widgets, full-width-template, theme-options, threaded-comments, translation-ready, block-styles, editor-styles
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned.
+*/
+
+/* ============================================
+   CSS Reset & Base Styles (Mobile First)
+   ============================================ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    background-color: #ffffff;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: #0073aa;
+    text-decoration: underline;
+}
+
+a:hover,
+a:focus {
+    color: #005177;
+    text-decoration: none;
+}
+
+/* ============================================
+   Layout Containers
+   ============================================ */
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.site-content {
+    min-height: calc(100vh - 200px);
+}
+
+/* ============================================
+   Header Styles
+   ============================================ */
+
+.site-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 15px 0;
+    position: relative;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Logo */
+.site-branding {
+    flex-shrink: 0;
+}
+
+.custom-logo-link {
+    display: inline-block;
+}
+
+.custom-logo {
+    max-height: 60px;
+    width: auto;
+}
+
+.site-title a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    text-decoration: none;
+}
+
+.site-description {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0;
+}
+
+/* Desktop Navigation */
+.main-navigation {
+    display: none;
+}
+
+.main-navigation ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.main-navigation li {
+    position: relative;
+}
+
+.main-navigation a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.main-navigation a:hover,
+.main-navigation .current-menu-item > a {
+    color: #0073aa;
+}
+
+/* Submenu */
+.main-navigation ul ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    flex-direction: column;
+    min-width: 200px;
+    display: none;
+    z-index: 1000;
+}
+
+.main-navigation li:hover > ul {
+    display: flex;
+}
+
+.main-navigation ul ul a {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Header Widgets */
+.header-widgets {
+    display: none;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-widgets .widget {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+/* Mobile Menu Toggle */
+.menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+}
+
+.hamburger {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    transition: transform 0.3s ease;
+}
+
+.hamburger::before {
+    top: -8px;
+}
+
+.hamburger::after {
+    top: 8px;
+}
+
+/* Hamburger Active State */
+.menu-toggle.active .hamburger {
+    background-color: transparent;
+}
+
+.menu-toggle.active .hamburger::before {
+    transform: rotate(45deg);
+    top: 0;
+}
+
+.menu-toggle.active .hamburger::after {
+    transform: rotate(-45deg);
+    top: 0;
+}
+
+/* Mobile Menu Panel */
+.mobile-menu-panel {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 300px;
+    height: 100vh;
+    background-color: #ffffff;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+    padding: 80px 20px 20px;
+}
+
+.mobile-menu-panel.active {
+    right: 0;
+}
+
+.mobile-menu-panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-menu-panel li {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.mobile-menu-panel a {
+    display: block;
+    padding: 15px 10px;
+    color: #333;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.mobile-menu-panel .sub-menu {
+    padding-left: 20px;
+    background-color: #f9f9f9;
+}
+
+/* Mobile Contact Widget */
+.mobile-contact {
+    padding: 20px 0;
+    border-top: 1px solid #e5e5e5;
+    margin-top: 20px;
+}
+
+/* Overlay */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ============================================
+   Main Content Area
+   ============================================ */
+
+.site-main {
+    padding: 40px 0;
+}
+
+.content-area {
+    width: 100%;
+}
+
+/* Posts and Pages */
+.entry-header {
+    margin-bottom: 20px;
+}
+
+.entry-title {
+    font-size: 2rem;
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.entry-meta {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.entry-content {
+    margin-bottom: 30px;
+}
+
+.entry-content p {
+    margin-bottom: 1.5em;
+}
+
+.entry-content h1,
+.entry-content h2,
+.entry-content h3,
+.entry-content h4,
+.entry-content h5,
+.entry-content h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    color: #333;
+}
+
+/* Alignment classes for Gutenberg */
+.alignwide {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.alignfull {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+}
+
+/* ============================================
+   Sidebar
+   ============================================ */
+
+.widget-area {
+    padding: 20px 0;
+}
+
+.widget {
+    margin-bottom: 30px;
+}
+
+.widget-title {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.widget ul {
+    list-style: none;
+    padding: 0;
+}
+
+.widget li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* ============================================
+   Content Top/Bottom Widget Areas
+   ============================================ */
+
+.content-top-widget,
+.content-bottom-widget {
+    padding: 20px 0;
+    background-color: #f9f9f9;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+
+.site-footer {
+    background-color: #f5f5f5;
+    border-top: 1px solid #e5e5e5;
+    padding: 40px 0 20px;
+}
+
+.footer-widgets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.footer-left,
+.footer-right {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #e5e5e5;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* ============================================
+   Responsive Styles (Desktop)
+   ============================================ */
+
+@media screen and (min-width: 1024px) {
+    .main-navigation {
+        display: block;
+    }
+
+    .menu-toggle,
+    .mobile-menu-panel,
+    .mobile-contact,
+    .menu-overlay {
+        display: none !important;
+    }
+
+    .header-widgets {
+        display: flex;
+    }
+
+    .header-container {
+        flex-wrap: nowrap;
+    }
+
+    .footer-widgets {
+        flex-wrap: nowrap;
+    }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+.screen-reader-text:focus {
+    background-color: #f1f1f1;
+    clip: auto !important;
+    display: block;
+    height: auto;
+    left: 5px;
+    top: 5px;
+    width: auto;
+    z-index: 100000;
+}
+
+/* ============================================
+   WordPress Core Classes
+   ============================================ */
+
+.sticky {
+    display: block;
+}
+
+.updated:not(.published) {
+    display: none;
+}
+
+.gallery-caption,
+.bypostauthor {
+    /* WordPress core classes */
+}
+
+/* Block alignment support */
+.wp-block-image .alignleft,
+.wp-block-image .alignright,
+.wp-block-image .aligncenter,
+.wp-block-video .alignleft,
+.wp-block-video .alignright,
+.wp-block-video .aligncenter {
+    margin-bottom: 1.5em;
+}
+
+.wp-block-image .alignleft {
+    float: left;
+    margin-right: 1.5em;
+}
+
+.wp-block-image .alignright {
+    float: right;
+    margin-left: 1.5em;
+}
+
+.wp-block-image .aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
