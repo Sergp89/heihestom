@@ -220,6 +220,28 @@ function clean_theme_widgets_init() {
         'after_title'   => '</h3>',
     ) );
 
+    // Footer Contact Widget Area
+    register_sidebar( array(
+        'name'          => __( 'Footer Contact', 'clean-theme' ),
+        'id'            => 'footer-contact',
+        'description'   => __( 'Contact information widget area in footer (address, phone, email, hours)', 'clean-theme' ),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3 class="widget-title">',
+        'after_title'   => '</h3>',
+    ) );
+
+    // Footer Menu Widget Area
+    register_sidebar( array(
+        'name'          => __( 'Footer Menu', 'clean-theme' ),
+        'id'            => 'footer-menu',
+        'description'   => __( 'Menu widget area in footer right column', 'clean-theme' ),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="footer-menu-title">',
+        'after_title'   => '</h4>',
+    ) );
+
     // Footer Right
     register_sidebar( array(
         'name'          => __( 'Footer Right', 'clean-theme' ),

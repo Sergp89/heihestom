@@ -1,6 +1,6 @@
 /**
  * Mobile Menu JavaScript
- * Handles hamburger menu toggle and animations with smooth transitions
+ * Handles hamburger menu toggle, floating buttons, and animations with smooth transitions
  *
  * @package Clean_Theme
  * @since 1.0.0
@@ -16,9 +16,12 @@
     const mobileMenuClose = document.querySelector('.mobile-menu-close');
     const floatingMenuBtn = document.querySelector('.floating-menu-btn');
     const scrollTopBtn = document.getElementById('scrollTopBtn');
+    const feedbackButton = document.getElementById('feedbackButton');
+    const feedbackPopup = document.getElementById('feedbackPopup');
     const body = document.body;
-
+    
     let isMenuOpen = false;
+    let isFeedbackOpen = false;
     let ticking = false;
 
     /**
@@ -50,6 +53,11 @@
                 }
             }
         }
+        
+        // Update aria-expanded
+        if (menuToggle) {
+            menuToggle.setAttribute('aria-expanded', isMenuOpen.toString());
+        }
     }
 
     /**
@@ -60,6 +68,7 @@
         
         if (menuToggle) {
             menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
         }
         
         if (mobileMenuOverlay) {
@@ -73,6 +82,42 @@
             if (window.scrollY > 100) {
                 floatingMenuBtn.classList.add('visible');
             }
+        }
+    }
+
+    /**
+     * Toggle feedback popup
+     */
+    function toggleFeedback() {
+        isFeedbackOpen = !isFeedbackOpen;
+        
+        if (feedbackButton) {
+            feedbackButton.classList.toggle('expanded', isFeedbackOpen);
+        }
+        
+        if (feedbackPopup) {
+            feedbackPopup.classList.toggle('active', isFeedbackOpen);
+        }
+        
+        // Update aria-expanded
+        if (feedbackButton) {
+            feedbackButton.setAttribute('aria-expanded', isFeedbackOpen.toString());
+        }
+    }
+
+    /**
+     * Close feedback popup
+     */
+    function closeFeedback() {
+        isFeedbackOpen = false;
+        
+        if (feedbackButton) {
+            feedbackButton.classList.remove('expanded');
+            feedbackButton.setAttribute('aria-expanded', 'false');
+        }
+        
+        if (feedbackPopup) {
+            feedbackPopup.classList.remove('active');
         }
     }
 
@@ -156,6 +201,21 @@
         });
     }
 
+    // Feedback button listener
+    if (feedbackButton) {
+        feedbackButton.addEventListener('click', toggleFeedback);
+    }
+
+    // Close feedback popup when clicking outside
+    document.addEventListener('click', (e) => {
+        if (isFeedbackOpen && 
+            feedbackPopup && 
+            !feedbackPopup.contains(e.target) && 
+            !feedbackButton.contains(e.target)) {
+            closeFeedback();
+        }
+    });
+
     // Scroll listener with passive option for better performance
     window.addEventListener('scroll', handleScroll, { passive: true });
 
@@ -170,10 +230,15 @@
         });
     });
 
-    // Close menu on ESC key
+    // Close menu and feedback on ESC key
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isMenuOpen) {
-            closeMenu();
+        if (e.key === 'Escape') {
+            if (isMenuOpen) {
+                closeMenu();
+            }
+            if (isFeedbackOpen) {
+                closeFeedback();
+            }
         }
     });
 
@@ -188,6 +253,15 @@
     if (menuToggle) {
         menuToggle.setAttribute('aria-expanded', 'false');
         menuToggle.setAttribute('aria-label', 'Toggle menu');
+    }
+
+    if (feedbackButton) {
+        feedbackButton.setAttribute('aria-expanded', 'false');
+        feedbackButton.setAttribute('aria-label', 'Contact us');
+    }
+
+    if (scrollTopBtn) {
+        scrollTopBtn.setAttribute('aria-label', 'Scroll to top');
     }
 
 })();
