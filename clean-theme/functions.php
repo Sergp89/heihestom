@@ -276,6 +276,15 @@ function clean_theme_scripts() {
         true
     );
 
+    // FAB (Floating Action Buttons) script
+    wp_enqueue_script(
+        'clean-theme-fab',
+        CLEAN_THEME_URI . '/assets/js/fab.js',
+        array(),
+        CLEAN_THEME_VERSION,
+        true
+    );
+
     // Comment reply script
     if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
         wp_enqueue_script( 'comment-reply' );

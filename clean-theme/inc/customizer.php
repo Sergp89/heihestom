@@ -245,43 +245,133 @@ function clean_theme_customize_register( $wp_customize ) {
         'priority'    => 20,
     ) );
 
-    // ===== Floating Buttons Section =====
+    // ===== Floating Buttons Section (Updated for FAB) =====
     $wp_customize->add_section( 'clean_floating_buttons_section', array(
-        'title'       => __( 'Floating Buttons', 'clean-theme' ),
-        'description' => __( 'Configure floating action buttons', 'clean-theme' ),
+        'title'       => __( 'Floating Action Buttons (FAB)', 'clean-theme' ),
+        'description' => __( 'Configure floating action buttons with messenger, phone, and form', 'clean-theme' ),
         'panel'       => 'clean_theme_options',
         'priority'    => 45,
     ) );
 
     // Scroll Button Background Color
-    $wp_customize->add_setting( 'scroll_btn_bg_color', array(
+    $wp_customize->add_setting( 'fab_scroll_bg_color', array(
         'default'           => '#0ea5e9',
         'sanitize_callback' => 'sanitize_hex_color',
         'transport'         => 'refresh',
     ) );
 
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'scroll_btn_bg_color', array(
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'fab_scroll_bg_color', array(
         'label'       => __( 'Scroll to Top Button Color', 'clean-theme' ),
         'description' => __( 'Background color for scroll button', 'clean-theme' ),
         'section'     => 'clean_floating_buttons_section',
         'priority'    => 10,
     ) ) );
 
-    // Feedback Button Background Color
-    $wp_customize->add_setting( 'feedback_btn_bg_color', array(
+    // FAB Feedback Button Background Color
+    $wp_customize->add_setting( 'fab_feedback_bg_color', array(
         'default'           => '#8b5cf6',
         'sanitize_callback' => 'sanitize_hex_color',
         'transport'         => 'refresh',
     ) );
 
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'feedback_btn_bg_color', array(
-        'label'       => __( 'Feedback Button Color', 'clean-theme' ),
-        'description' => __( 'Background color for feedback button', 'clean-theme' ),
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'fab_feedback_bg_color', array(
+        'label'       => __( 'Main FAB Button Color', 'clean-theme' ),
+        'description' => __( 'Background color for main feedback button', 'clean-theme' ),
         'section'     => 'clean_floating_buttons_section',
         'priority'    => 20,
     ) ) );
 
-    // Feedback Popup Title
+    // FAB Messenger Link
+    $wp_customize->add_setting( 'fab_messenger_link', array(
+        'default'           => '',
+        'sanitize_callback' => 'esc_url_raw',
+        'transport'         => 'refresh',
+    ) );
+
+    $wp_customize->add_control( 'fab_messenger_link', array(
+        'label'       => __( 'Messenger Link', 'clean-theme' ),
+        'description' => __( 'Link to messenger (Telegram, WhatsApp, etc.)', 'clean-theme' ),
+        'section'     => 'clean_floating_buttons_section',
+        'type'        => 'url',
+        'priority'    => 30,
+    ) );
+
+    // FAB Messenger Label
+    $wp_customize->add_setting( 'fab_messenger_label', array(
+        'default'           => __( 'Write us', 'clean-theme' ),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+
+    $wp_customize->add_control( 'fab_messenger_label', array(
+        'label'       => __( 'Messenger Button Label', 'clean-theme' ),
+        'description' => __( 'Text shown on messenger button', 'clean-theme' ),
+        'section'     => 'clean_floating_buttons_section',
+        'type'        => 'text',
+        'priority'    => 31,
+    ) );
+
+    // FAB Phone
+    $wp_customize->add_setting( 'fab_phone', array(
+        'default'           => '',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+
+    $wp_customize->add_control( 'fab_phone', array(
+        'label'       => __( 'Phone Number', 'clean-theme' ),
+        'description' => __( 'Phone number for call button', 'clean-theme' ),
+        'section'     => 'clean_floating_buttons_section',
+        'type'        => 'text',
+        'priority'    => 32,
+    ) );
+
+    // FAB Form Label
+    $wp_customize->add_setting( 'fab_form_label', array(
+        'default'           => __( 'Form', 'clean-theme' ),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+
+    $wp_customize->add_control( 'fab_form_label', array(
+        'label'       => __( 'Form Button Label', 'clean-theme' ),
+        'description' => __( 'Text shown on form button', 'clean-theme' ),
+        'section'     => 'clean_floating_buttons_section',
+        'type'        => 'text',
+        'priority'    => 33,
+    ) );
+
+    // Feedback Modal Title
+    $wp_customize->add_setting( 'feedback_modal_title', array(
+        'default'           => __( 'Request a Call', 'clean-theme' ),
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ) );
+
+    $wp_customize->add_control( 'feedback_modal_title', array(
+        'label'       => __( 'Feedback Modal Title', 'clean-theme' ),
+        'description' => __( 'Title for feedback modal window', 'clean-theme' ),
+        'section'     => 'clean_floating_buttons_section',
+        'type'        => 'text',
+        'priority'    => 40,
+    ) );
+
+    // Feedback Modal Subtitle
+    $wp_customize->add_setting( 'feedback_modal_subtitle', array(
+        'default'           => __( 'Leave your details and we will call you back shortly.', 'clean-theme' ),
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'transport'         => 'refresh',
+    ) );
+
+    $wp_customize->add_control( 'feedback_modal_subtitle', array(
+        'label'       => __( 'Feedback Modal Subtitle', 'clean-theme' ),
+        'description' => __( 'Subtitle text for feedback modal', 'clean-theme' ),
+        'section'     => 'clean_floating_buttons_section',
+        'type'        => 'textarea',
+        'priority'    => 41,
+    ) );
+
+    // Old settings (keep for backward compatibility)
     $wp_customize->add_setting( 'feedback_popup_title', array(
         'default'           => __( 'Contact Us', 'clean-theme' ),
         'sanitize_callback' => 'sanitize_text_field',
@@ -289,71 +379,11 @@ function clean_theme_customize_register( $wp_customize ) {
     ) );
 
     $wp_customize->add_control( 'feedback_popup_title', array(
-        'label'       => __( 'Feedback Popup Title', 'clean-theme' ),
-        'description' => __( 'Title for feedback popup', 'clean-theme' ),
+        'label'       => __( '[Old] Feedback Popup Title', 'clean-theme' ),
+        'description' => __( 'Title for old feedback popup (deprecated)', 'clean-theme' ),
         'section'     => 'clean_floating_buttons_section',
         'type'        => 'text',
-        'priority'    => 30,
-    ) );
-
-    // Feedback Popup Text
-    $wp_customize->add_setting( 'feedback_popup_text', array(
-        'default'           => __( 'Get in touch with us using the contacts below:', 'clean-theme' ),
-        'sanitize_callback' => 'sanitize_textarea_field',
-        'transport'         => 'refresh',
-    ) );
-
-    $wp_customize->add_control( 'feedback_popup_text', array(
-        'label'       => __( 'Feedback Popup Text', 'clean-theme' ),
-        'description' => __( 'Description text for feedback popup', 'clean-theme' ),
-        'section'     => 'clean_floating_buttons_section',
-        'type'        => 'textarea',
-        'priority'    => 31,
-    ) );
-
-    // Feedback Phone
-    $wp_customize->add_setting( 'feedback_phone', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'refresh',
-    ) );
-
-    $wp_customize->add_control( 'feedback_phone', array(
-        'label'       => __( 'Phone for Feedback Popup', 'clean-theme' ),
-        'description' => __( 'Phone number shown in feedback popup', 'clean-theme' ),
-        'section'     => 'clean_floating_buttons_section',
-        'type'        => 'text',
-        'priority'    => 32,
-    ) );
-
-    // Feedback Email
-    $wp_customize->add_setting( 'feedback_email', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_email',
-        'transport'         => 'refresh',
-    ) );
-
-    $wp_customize->add_control( 'feedback_email', array(
-        'label'       => __( 'Email for Feedback Popup', 'clean-theme' ),
-        'description' => __( 'Email shown in feedback popup', 'clean-theme' ),
-        'section'     => 'clean_floating_buttons_section',
-        'type'        => 'email',
-        'priority'    => 33,
-    ) );
-
-    // Feedback WhatsApp
-    $wp_customize->add_setting( 'feedback_whatsapp', array(
-        'default'           => '',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'refresh',
-    ) );
-
-    $wp_customize->add_control( 'feedback_whatsapp', array(
-        'label'       => __( 'WhatsApp for Feedback Popup', 'clean-theme' ),
-        'description' => __( 'WhatsApp number shown in feedback popup', 'clean-theme' ),
-        'section'     => 'clean_floating_buttons_section',
-        'type'        => 'text',
-        'priority'    => 34,
+        'priority'    => 100,
     ) );
 
     // Show Footer Menu
@@ -410,8 +440,14 @@ function clean_theme_customizer_css() {
     $footer_bg            = get_theme_mod( 'footer_background_color', '#f5f5f5' );
     $font_size            = get_theme_mod( 'base_font_size', 16 );
     $footer_accent_color  = get_theme_mod( 'footer_accent_color', '#38bdf8' );
-    $scroll_btn_bg        = get_theme_mod( 'scroll_btn_bg_color', '#0ea5e9' );
-    $feedback_btn_bg      = get_theme_mod( 'feedback_btn_bg_color', '#8b5cf6' );
+    
+    // FAB colors (new settings)
+    $fab_scroll_bg        = get_theme_mod( 'fab_scroll_bg_color', '#0ea5e9' );
+    $fab_feedback_bg      = get_theme_mod( 'fab_feedback_bg_color', '#8b5cf6' );
+    
+    // Old settings (fallback for backward compatibility)
+    $scroll_btn_bg        = get_theme_mod( 'scroll_btn_bg_color', $fab_scroll_bg );
+    $feedback_btn_bg      = get_theme_mod( 'feedback_btn_bg_color', $fab_feedback_bg );
 
     $css = '';
 
@@ -430,14 +466,24 @@ function clean_theme_customizer_css() {
         $css .= ":root { --footer-accent-color: {$footer_accent_color}; }";
     }
 
-    // Scroll button background
-    if ( '#0ea5e9' !== $scroll_btn_bg ) {
-        $css .= ":root { --scroll-btn-bg: {$scroll_btn_bg}; }";
+    // FAB scroll button background (new)
+    if ( '#0ea5e9' !== $fab_scroll_bg ) {
+        $css .= ":root { --fab-scroll-bg: {$fab_scroll_bg}; }";
     }
 
-    // Feedback button background
-    if ( '#8b5cf6' !== $feedback_btn_bg ) {
-        $css .= ":root { --feedback-btn-bg: {$feedback_btn_bg}; }";
+    // FAB feedback button background (new)
+    if ( '#8b5cf6' !== $fab_feedback_bg ) {
+        $css .= ":root { --fab-feedback-bg: {$fab_feedback_bg}; }";
+    }
+
+    // Old scroll button background (backward compatibility)
+    if ( '#0ea5e9' !== $scroll_btn_bg && $scroll_btn_bg !== $fab_scroll_bg ) {
+        $css .= ":root { --fab-scroll-bg: {$scroll_btn_bg}; }";
+    }
+
+    // Old feedback button background (backward compatibility)
+    if ( '#8b5cf6' !== $feedback_btn_bg && $feedback_btn_bg !== $fab_feedback_bg ) {
+        $css .= ":root { --fab-feedback-bg: {$feedback_btn_bg}; }";
     }
 
     // Font size

@@ -1180,33 +1180,106 @@ ul {
 }
 
 /* ============================================
-   Floating Action Buttons (Bottom Right)
+   Widget Styles - Icon Box (Prototype Style)
+   ============================================ */
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.icon-box:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+
+.icon-box svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+
+/* Widget contact item with icon-box */
+.widget-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 18px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+}
+
+.widget-contact-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateX(5px);
+}
+
+.widget-contact-text {
+    flex: 1;
+}
+
+.widget-contact-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    display: block;
+}
+
+.widget-contact-value {
+    font-size: 15px;
+    color: #ffffff;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.widget-contact-value a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.widget-contact-value a:hover {
+    color: var(--primary-light);
+}
+
+/* ============================================
+   Floating Action Buttons (FAB) - New Style
    ============================================ */
 
 .floating-buttons-container {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    z-index: 999;
+    z-index: 9999;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     gap: 15px;
-}
-
-/* Feedback Button (Expandable) */
-.feedback-button-wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
     align-items: flex-end;
 }
 
-.feedback-button {
-    width: 56px;
-    height: 56px;
-    border-radius: 16px;
-    background: var(--feedback-btn-bg, #8b5cf6);
+/* Main Callback FAB Button */
+.callback-fab-main {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--fab-feedback-bg, #8b5cf6), var(--fab-feedback-bg-dark, #7c3aed));
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -1214,26 +1287,30 @@ ul {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
+    z-index: 3;
 }
 
-.feedback-button:hover {
-    background: var(--feedback-btn-bg, #8b5cf6);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+.callback-fab-main:hover {
+    transform: translateY(-3px) scale(1.08);
+    box-shadow: 0 10px 35px rgba(139, 92, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
-.feedback-button:active {
+.callback-fab-main:active {
     transform: translateY(0) scale(0.95);
     transition-duration: 0.15s;
 }
 
-.feedback-button svg {
-    width: 26px;
-    height: 26px;
+.callback-fab-main.rotated svg {
+    transform: rotate(45deg);
+}
+
+.callback-fab-main svg {
+    width: 28px;
+    height: 28px;
     stroke: #ffffff;
     fill: none;
     stroke-width: 2;
@@ -1242,108 +1319,121 @@ ul {
     transition: transform 0.35s ease;
 }
 
-.feedback-button.expanded svg {
-    transform: rotate(45deg);
-}
-
-/* Feedback Popup */
-.feedback-popup {
-    position: absolute;
-    bottom: 70px;
-    right: 0;
-    width: 320px;
-    background: rgba(15, 23, 42, 0.98);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 16px;
-    padding: 25px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+/* FAB List Container */
+.fab-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 10px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px) scale(0.9);
+    transform-origin: bottom right;
     transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    z-index: 2;
 }
 
-.feedback-popup.active {
+.fab-list.active {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
 }
 
-.feedback-popup h4 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0 0 15px;
-}
-
-.feedback-popup p {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0 0 20px;
-    line-height: 1.5;
-}
-
-.feedback-contact-item {
+/* Individual FAB Items */
+.fab-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--gray-light);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 12px 18px;
+    border-radius: 50px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+    transform: translateX(30px);
+    opacity: 0;
 }
 
-.feedback-contact-item:last-child {
-    border-bottom: none;
+.fab-list.active .fab-item {
+    transform: translateX(0);
+    opacity: 1;
 }
 
-.feedback-contact-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+/* Staggered Animation */
+.fab-list.active .fab-item:nth-child(1) { transition-delay: 0.05s; }
+.fab-list.active .fab-item:nth-child(2) { transition-delay: 0.1s; }
+.fab-list.active .fab-item:nth-child(3) { transition-delay: 0.15s; }
+
+.fab-item:hover {
+    background: #ffffff;
+    transform: translateX(-8px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* FAB Icons */
+.fab-item-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #ffffff;
+    font-size: 18px;
     flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.feedback-contact-icon svg {
+.fab-item-icon svg {
     width: 20px;
     height: 20px;
-    stroke: #ffffff;
+    stroke: currentColor;
     fill: none;
     stroke-width: 2;
 }
 
-.feedback-contact-info {
+.fab-item-icon.messenger { 
+    background: linear-gradient(135deg, #0088cc, #0066aa); 
+}
+.fab-item-icon.phone { 
+    background: linear-gradient(135deg, #2ecc71, #27ae60); 
+}
+.fab-item-icon.form { 
+    background: linear-gradient(135deg, var(--fab-feedback-bg, #8b5cf6), var(--fab-feedback-bg-dark, #7c3aed)); 
+}
+
+.fab-item-text {
     flex: 1;
 }
 
-.feedback-contact-label {
-    font-size: 12px;
-    color: var(--gray);
+.fab-item-label {
+    font-size: 11px;
+    color: #64748b;
     display: block;
+    margin-bottom: 2px;
+    font-weight: 500;
 }
 
-.feedback-contact-link {
+.fab-item-value {
     font-size: 14px;
-    font-weight: 600;
-    color: var(--dark);
-    text-decoration: none;
-    transition: color var(--transition-fast);
+    color: #1e293b;
+    font-weight: 700;
 }
 
-.feedback-contact-link:hover {
-    color: var(--primary);
-}
-
-/* Scroll to Top Button */
-.scroll-top-btn {
-    width: 56px;
-    height: 56px;
-    border-radius: 16px;
-    background: var(--scroll-btn-bg, var(--primary));
+/* Scroll to Top FAB Button */
+.callback-fab-scroll {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--fab-scroll-bg, var(--primary)), var(--fab-scroll-bg-dark, var(--primary-dark)));
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -1351,39 +1441,231 @@ ul {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(10px) scale(0.9);
+    transform: translateY(20px) scale(0.9);
+    position: relative;
+    z-index: 1;
 }
 
-.scroll-top-btn.visible {
+.callback-fab-scroll.visible {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
 }
 
-.scroll-top-btn:hover {
-    background: var(--scroll-btn-bg, var(--primary));
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 10px 30px rgba(12, 74, 110, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+.callback-fab-scroll:hover {
+    transform: translateY(-3px) scale(1.08);
+    box-shadow: 0 10px 35px rgba(14, 165, 233, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
-.scroll-top-btn:active {
+.callback-fab-scroll:active {
     transform: translateY(0) scale(0.95);
     transition-duration: 0.15s;
 }
 
-.scroll-top-btn svg {
-    width: 26px;
-    height: 26px;
+.callback-fab-scroll svg {
+    width: 24px;
+    height: 24px;
     stroke: #ffffff;
     fill: none;
     stroke-width: 2.5;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
+
+/* Feedback Modal/Popup Overlay */
+.feedback-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.35s ease;
+}
+
+.feedback-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Feedback Modal Content */
+.feedback-modal {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 480px;
+    position: relative;
+    transform: translateY(40px) scale(0.95);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+}
+
+.feedback-modal-overlay.active .feedback-modal {
+    transform: translateY(0) scale(1);
+}
+
+.feedback-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #64748b;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feedback-modal-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #1e293b;
+    transform: rotate(90deg);
+}
+
+.feedback-modal h3 {
+    margin-top: 0;
+    color: #1e293b;
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.feedback-modal-subtitle {
+    font-size: 14px;
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* Feedback Form */
+.feedback-form-group {
+    margin-bottom: 18px;
+}
+
+.feedback-form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 8px;
+}
+
+.feedback-form-group input,
+.feedback-form-group textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background: #f8fafc;
+}
+
+.feedback-form-group input:focus,
+.feedback-form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+}
+
+.feedback-form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.feedback-submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
+}
+
+.feedback-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(14, 165, 233, 0.4);
+}
+
+.feedback-submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive adjustments for FAB */
+@media (max-width: 768px) {
+    .floating-buttons-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .callback-fab-main {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .callback-fab-main svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .fab-item {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    
+    .fab-item-icon {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .fab-item-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .feedback-modal {
+        padding: 25px;
+        margin: 20px;
+    }
+    
+    .feedback-modal h3 {
+        font-size: 22px;
+    }
+}
+
+/* ============================================
+   Old Floating Action Buttons (Keep for compatibility)
+   ============================================ */
 
 /* ============================================
    Footer (Dark Style as per Prototype)

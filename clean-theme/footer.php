@@ -190,81 +190,104 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
     </footer><!-- #colophon -->
 
-    <!-- Floating Action Buttons -->
+    <!-- Floating Action Buttons (FAB) -->
     <div class="floating-buttons-container">
-        <!-- Feedback Button -->
-        <div class="feedback-button-wrapper">
-            <div class="feedback-popup" id="feedbackPopup">
-                <h4><?php echo esc_html( get_theme_mod( 'feedback_popup_title', __( 'Contact Us', 'clean-theme' ) ) ); ?></h4>
-                <p><?php echo esc_html( get_theme_mod( 'feedback_popup_text', __( 'Get in touch with us using the contacts below:', 'clean-theme' ) ) ); ?></p>
-                
-                <?php $feedback_phone = get_theme_mod( 'feedback_phone' ); ?>
-                <?php $feedback_email = get_theme_mod( 'feedback_email' ); ?>
-                <?php $feedback_whatsapp = get_theme_mod( 'feedback_whatsapp' ); ?>
-                
-                <?php if ( $feedback_phone ) : ?>
-                    <div class="feedback-contact-item">
-                        <div class="feedback-contact-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                            </svg>
-                        </div>
-                        <div class="feedback-contact-info">
-                            <span class="feedback-contact-label"><?php esc_html_e( 'Phone', 'clean-theme' ); ?></span>
-                            <a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $feedback_phone ) ); ?>" class="feedback-contact-link">
-                                <?php echo esc_html( $feedback_phone ); ?>
-                            </a>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ( $feedback_email ) : ?>
-                    <div class="feedback-contact-item">
-                        <div class="feedback-contact-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                        </div>
-                        <div class="feedback-contact-info">
-                            <span class="feedback-contact-label"><?php esc_html_e( 'Email', 'clean-theme' ); ?></span>
-                            <a href="mailto:<?php echo esc_attr( $feedback_email ); ?>" class="feedback-contact-link">
-                                <?php echo esc_html( $feedback_email ); ?>
-                            </a>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ( $feedback_whatsapp ) : ?>
-                    <div class="feedback-contact-item">
-                        <div class="feedback-contact-icon">
+        <!-- Main Callback FAB with Expandable List -->
+        <div class="callback-fab-wrapper">
+            <!-- FAB List (Hidden by default) -->
+            <div class="fab-list" id="fabList">
+                <!-- Messenger Button -->
+                <?php $messenger_link = get_theme_mod( 'fab_messenger_link' ); ?>
+                <?php if ( $messenger_link ) : ?>
+                    <a href="<?php echo esc_url( $messenger_link ); ?>" class="fab-item" target="_blank" rel="noopener">
+                        <span class="fab-item-icon messenger">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                             </svg>
-                        </div>
-                        <div class="feedback-contact-info">
-                            <span class="feedback-contact-label"><?php esc_html_e( 'WhatsApp', 'clean-theme' ); ?></span>
-                            <a href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', $feedback_whatsapp ) ); ?>" class="feedback-contact-link" target="_blank" rel="noopener">
-                                <?php echo esc_html( $feedback_whatsapp ); ?>
-                            </a>
-                        </div>
-                    </div>
+                        </span>
+                        <span class="fab-item-text">
+                            <span class="fab-item-label"><?php esc_html_e( 'Messenger', 'clean-theme' ); ?></span>
+                            <span class="fab-item-value"><?php echo esc_html( get_theme_mod( 'fab_messenger_label', __( 'Write us', 'clean-theme' ) ) ); ?></span>
+                        </span>
+                    </a>
                 <?php endif; ?>
+
+                <!-- Phone Button -->
+                <?php $phone = get_theme_mod( 'fab_phone' ); ?>
+                <?php if ( $phone ) : ?>
+                    <a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $phone ) ); ?>" class="fab-item">
+                        <span class="fab-item-icon phone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </span>
+                        <span class="fab-item-text">
+                            <span class="fab-item-label"><?php esc_html_e( 'Call us', 'clean-theme' ); ?></span>
+                            <span class="fab-item-value"><?php echo esc_html( $phone ); ?></span>
+                        </span>
+                    </a>
+                <?php endif; ?>
+
+                <!-- Form Button -->
+                <button class="fab-item" id="fabFormBtn" type="button">
+                    <span class="fab-item-icon form">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </span>
+                    <span class="fab-item-text">
+                        <span class="fab-item-label"><?php esc_html_e( 'Request a call', 'clean-theme' ); ?></span>
+                        <span class="fab-item-value"><?php echo esc_html( get_theme_mod( 'fab_form_label', __( 'Form', 'clean-theme' ) ) ); ?></span>
+                    </span>
+                </button>
             </div>
-            
-            <button class="feedback-button" id="feedbackButton" aria-label="<?php esc_attr_e( 'Contact us', 'clean-theme' ); ?>">
+
+            <!-- Main FAB Button -->
+            <button class="callback-fab-main" id="callbackFabMain" aria-label="<?php esc_attr_e( 'Contact us', 'clean-theme' ); ?>" aria-expanded="false">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>
             </button>
         </div>
 
-        <!-- Scroll to Top Button -->
-        <button class="scroll-top-btn" id="scrollTopBtn" aria-label="<?php esc_attr_e( 'Scroll to top', 'clean-theme' ); ?>">
+        <!-- Scroll to Top FAB Button -->
+        <button class="callback-fab-scroll" id="scrollTopFab" aria-label="<?php esc_attr_e( 'Scroll to top', 'clean-theme' ); ?>">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <polyline points="18 15 12 9 6 15"></polyline>
             </svg>
         </button>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div class="feedback-modal-overlay" id="feedbackModalOverlay">
+        <div class="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedbackModalTitle">
+            <button class="feedback-modal-close" id="feedbackModalClose" aria-label="<?php esc_attr_e( 'Close modal', 'clean-theme' ); ?>">&times;</button>
+            <h3 id="feedbackModalTitle"><?php echo esc_html( get_theme_mod( 'feedback_modal_title', __( 'Request a Call', 'clean-theme' ) ) ); ?></h3>
+            <p class="feedback-modal-subtitle"><?php echo esc_html( get_theme_mod( 'feedback_modal_subtitle', __( 'Leave your details and we will call you back shortly.', 'clean-theme' ) ) ); ?></p>
+            
+            <form class="feedback-form" method="post" action="">
+                <div class="feedback-form-group">
+                    <label for="feedback-name"><?php esc_html_e( 'Your Name', 'clean-theme' ); ?></label>
+                    <input type="text" id="feedback-name" name="name" required placeholder="<?php esc_attr_e( 'John Doe', 'clean-theme' ); ?>">
+                </div>
+                
+                <div class="feedback-form-group">
+                    <label for="feedback-phone"><?php esc_html_e( 'Phone Number', 'clean-theme' ); ?></label>
+                    <input type="tel" id="feedback-phone" name="phone" required placeholder="+1 (555) 123-4567">
+                </div>
+                
+                <div class="feedback-form-group">
+                    <label for="feedback-message"><?php esc_html_e( 'Message (optional)', 'clean-theme' ); ?></label>
+                    <textarea id="feedback-message" name="message" placeholder="<?php esc_attr_e( 'How can we help you?', 'clean-theme' ); ?>"></textarea>
+                </div>
+                
+                <button type="submit" class="feedback-submit-btn"><?php esc_html_e( 'Send Request', 'clean-theme' ); ?></button>
+            </form>
+        </div>
     </div>
 
     <?php wp_footer(); ?>
