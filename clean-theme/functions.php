@@ -21,7 +21,10 @@ define( 'CLEAN_THEME_URI', get_template_directory_uri() );
 /**
  * Include additional files
  */
+require_once CLEAN_THEME_DIR . '/inc/sanitization-callbacks.php';
+require_once CLEAN_THEME_DIR . '/inc/template-tags.php';
 require_once CLEAN_THEME_DIR . '/inc/customizer.php';
+require_once CLEAN_THEME_DIR . '/inc/ajax-handler.php';
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
