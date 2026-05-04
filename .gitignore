@@ -1,39 +1,83 @@
-```
+```gitignore
 # Compiled and build artifacts
 *.pyc
-__pycache__/
+*.class
 *.o
+*.exe
+*.dll
+*.so
+*.a
 *.obj
-dist/
-build/
+*.out
+__pycache__/
+*.pyo
+*.pyd
 
 # Dependencies
-.venv/
-venv/
 node_modules/
-
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-
-# Environment
+venv/
+.venv/
 .env
 .env.local
 *.env.*
 
-# Editors
-.vscode/
-.idea/
+# Build and distribution
+dist/
+build/
+target/
+*.min.js
+*.min.css
+*.bundle.js
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
 
 # OS generated files
 .DS_Store
 Thumbs.db
+*.DS_Store
+ehthumbs.db
+Icon?
+.directory
+.Trashes
+lost+found/
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.atom/
+.atom/
+*.vim
+*.vimrc
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+*.coveragerc
+
+# Database
+*.sqlite
+*.db
+
+# Cache directories
+.cache/
+.mypy_cache/
+.pytest_cache/
+.nyc_output/
+coverage/
+
+# WordPress specific
+wp-content/cache/
+*.sql
+wp-config-local.php
+wp-content/uploads/
 
 # Compressed files
 *.zip

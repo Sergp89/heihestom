@@ -102,6 +102,50 @@
         checkFadeIn();
 
         /**
+         * Back to Top Button Visibility Toggle
+         */
+        var backToTopBtn = document.getElementById('back-to-top-btn');
+        
+        if (backToTopBtn) {
+            $(window).on('scroll', function() {
+                if ($(window).scrollTop() > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            // Scroll to top on click
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        /**
+         * Feedback Button Click Handler
+         */
+        var feedbackBtn = document.getElementById('feedback-btn');
+        
+        if (feedbackBtn) {
+            feedbackBtn.addEventListener('click', function() {
+                // You can add your feedback modal or scroll to contact section here
+                var contactSection = document.querySelector('.contact-section');
+                if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    // Fallback: scroll to footer
+                    window.scrollTo({
+                        top: document.body.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        }
+
+        /**
          * Header Shadow on Scroll
          */
         $(window).on('scroll', function() {
