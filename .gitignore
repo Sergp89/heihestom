@@ -1,29 +1,13 @@
 ```
-# Build artifacts
-dist/
-build/
-*.css.map
+# WordPress theme development
+wp-content/themes/clean-theme/*.css
+wp-content/themes/clean-theme/*.js
+wp-content/themes/clean-theme/*.php
+wp-content/themes/clean-theme/assets/
+wp-content/themes/clean-theme/inc/
+wp-content/themes/clean-theme/template-parts/
 
-# Dependencies
-node_modules/
-
-# WordPress specific
-wp-content/cache/
-*.log
-*.tmp
-
-# Environment
-.env
-.env.local
-.env.*
-
-# Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS generated files
-.DS_Store
-Thumbs.db
+wp-content/themes/my-wp-theme/*.css
+wp-content/themes/my-wp-theme/*.js
+wp-content/themes/my-wp-theme/*.php
 ```
