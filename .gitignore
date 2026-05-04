@@ -1,85 +1,43 @@
-```gitignore
-# Compiled and build artifacts
-*.pyc
-*.class
-*.o
-*.exe
-*.dll
-*.so
-*.a
-*.obj
-*.out
-__pycache__/
-*.pyo
-*.pyd
+```
+# Build artifacts
+dist/
+build/
+*.css.map
 
 # Dependencies
 node_modules/
-venv/
-.venv/
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment
 .env
 .env.local
 *.env.*
 
-# Build and distribution
-dist/
-build/
-target/
-*.min.js
-*.min.css
-*.bundle.js
-
-# Logs and temporary files
-*.log
-*.tmp
-*.temp
-*.swp
-*.swo
-
-# OS generated files
-.DS_Store
-Thumbs.db
-*.DS_Store
-ehthumbs.db
-Icon?
-.directory
-.Trashes
-lost+found/
-
-# Editors and IDEs
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-*.atom/
-.atom/
-*.vim
-*.vimrc
+# Cache directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 # Coverage reports
 coverage/
 htmlcov/
 .coverage
-*.coveragerc
 
-# Database
-*.sqlite
-*.db
-
-# Cache directories
-.cache/
-.mypy_cache/
-.pytest_cache/
-.nyc_output/
-coverage/
-
-# WordPress specific
-wp-content/cache/
-*.sql
-wp-config-local.php
-wp-content/uploads/
-
-# Compressed files
+# Compression artifacts
 *.zip
 *.gz
 *.tar
@@ -98,8 +56,4 @@ wp-content/uploads/
 *.Z
 *.lz
 *.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
 ```

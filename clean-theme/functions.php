@@ -13,15 +13,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Define theme constants
+ * 
+ * Note: For child theme compatibility, we use get_template_directory() 
+ * for parent theme files and get_stylesheet_directory() for overrideable files.
  */
 define( 'CLEAN_THEME_VERSION', '1.0.0' );
-define( 'CLEAN_THEME_DIR', get_template_directory() );
-define( 'CLEAN_THEME_URI', get_template_directory_uri() );
+define( 'CLEAN_THEME_PARENT_DIR', get_template_directory() );
+define( 'CLEAN_THEME_PARENT_URI', get_template_directory_uri() );
+define( 'CLEAN_THEME_DIR', get_stylesheet_directory() );
+define( 'CLEAN_THEME_URI', get_stylesheet_directory_uri() );
 
 /**
  * Include additional files
+ * 
+ * Load from child theme first if exists, otherwise use parent theme files.
+ * This allows child themes to override functionality by creating files in their /inc/ directory.
  */
-require_once CLEAN_THEME_DIR . '/inc/customizer.php';
+function clean_theme_require_file( $filename ) {
+    // Check if file exists in child theme
+    if ( file_exists( CLEAN_THEME_DIR . '/' . $filename ) ) {
+        require_once CLEAN_THEME_DIR . '/' . $filename;
+    } else {
+        // Fall back to parent theme
+        require_once CLEAN_THEME_PARENT_DIR . '/' . $filename;
+    }
+}
+
+clean_theme_require_file( 'inc/sanitization-callbacks.php' );
+clean_theme_require_file( 'inc/template-tags.php' );
+clean_theme_require_file( 'inc/customizer.php' );
+clean_theme_require_file( 'inc/ajax-handler.php' );
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -257,20 +278,48 @@ add_action( 'widgets_init', 'clean_theme_widgets_init' );
 
 /**
  * Enqueue scripts and styles.
+ * 
+ * Child theme compatibility: Styles are loaded to allow child theme overrides.
  */
 function clean_theme_scripts() {
-    // Main stylesheet
+    // Main stylesheet - uses get_stylesheet_uri() to support child themes
     wp_enqueue_style(
         'clean-theme-style',
         get_stylesheet_uri(),
         array(),
         CLEAN_THEME_VERSION
     );
+    
+    // Parent theme main CSS (for template parts and components)
+    wp_enqueue_style(
+        'clean-theme-main',
+        CLEAN_THEME_PARENT_URI . '/assets/css/main.css',
+        array( 'clean-theme-style' ),
+        CLEAN_THEME_VERSION
+    );
+    
+    // Customizer preview styles (only in Customizer preview)
+    if ( is_customize_preview() ) {
+        wp_enqueue_style(
+            'clean-theme-customizer',
+            CLEAN_THEME_PARENT_URI . '/assets/css/customizer-preview.css',
+            array( 'clean-theme-main' ),
+            CLEAN_THEME_VERSION
+        );
+    }
+    
+    // Floating buttons styles
+    wp_enqueue_style(
+        'clean-theme-float-buttons',
+        CLEAN_THEME_PARENT_URI . '/assets/css/float-buttons.css',
+        array( 'clean-theme-main' ),
+        CLEAN_THEME_VERSION
+    );
 
     // Mobile menu script
     wp_enqueue_script(
         'clean-theme-mobile-menu',
-        CLEAN_THEME_URI . '/assets/js/mobile-menu.js',
+        CLEAN_THEME_PARENT_URI . '/assets/js/mobile-menu.js',
         array(),
         CLEAN_THEME_VERSION,
         true
@@ -279,18 +328,20 @@ function clean_theme_scripts() {
     // FAB (Floating Action Buttons) script
     wp_enqueue_script(
         'clean-theme-fab',
-        CLEAN_THEME_URI . '/assets/js/fab.js',
-        array(),
+        CLEAN_THEME_PARENT_URI . '/assets/js/fab.js',
+        array( 'clean-theme-mobile-menu' ),
         CLEAN_THEME_VERSION,
         true
     );
     
     // Localize script with AJAX and translation data
-    wp_localize_script( 'clean-theme-fab', 'cleanDentalVars', array(
+    wp_localize_script( 'clean-theme-fab', 'cleanThemeVars', array(
         'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-        'sendingText'   => __( 'Sending...', 'clean-dental' ),
-        'sentText'      => __( 'Sent!', 'clean-dental' ),
-        'errorText'     => __( 'Error. Please try again.', 'clean-dental' ),
+        'nonce'         => wp_create_nonce( 'clean_theme_contact_nonce' ),
+        'sendingText'   => __( 'Sending...', 'clean-theme' ),
+        'sentText'      => __( 'Sent!', 'clean-theme' ),
+        'errorText'     => __( 'Error. Please try again.', 'clean-theme' ),
+        'homeUrl'       => home_url(),
     ) );
 
     // Comment reply script
@@ -312,6 +363,11 @@ function clean_theme_body_classes( $classes ) {
     // Add a class if there are header widgets
     if ( is_active_sidebar( 'header-widgets' ) ) {
         $classes[] = 'has-header-widgets';
+    }
+    
+    // Add child theme class for styling hooks
+    if ( is_child_theme() ) {
+        $classes[] = 'using-child-theme';
     }
 
     return $classes;
@@ -368,3 +424,101 @@ function clean_theme_resource_hints( $urls, $relation_type ) {
     return $urls;
 }
 add_filter( 'wp_resource_hints', 'clean_theme_resource_hints', 10, 2 );
+
+/**
+ * Filter template directory to support child theme overrides for template parts.
+ * 
+ * This allows child themes to override any template part by creating the same
+ * file structure in their template-parts/ directory.
+ */
+function clean_theme_locate_template( $located, $template_name, $load, $require_once ) {
+    // Only modify if we're looking for template parts
+    if ( strpos( $template_name, 'template-parts/' ) === 0 ) {
+        $child_template = CLEAN_THEME_DIR . '/' . $template_name;
+        if ( file_exists( $child_template ) ) {
+            return $child_template;
+        }
+    }
+    return $located;
+}
+add_filter( 'locate_template', 'clean_theme_locate_template', 10, 4 );
+
+/**
+ * Support child theme stylesheet overrides for get_template_part().
+ * 
+ * Child themes can override parent theme template parts by placing files
+ * with the same relative path in their own directory.
+ */
+function clean_theme_get_template_part( $slug, $name = null ) {
+    /**
+     * Fires before including a template part.
+     *
+     * @since 1.0.0
+     *
+     * @param string      $slug The slug of the template part.
+     * @param string|null $name The name of the template part.
+     */
+    do_action( "get_template_part_{$slug}", $slug, $name );
+    
+    $templates = array();
+    $name = (string) $name;
+    
+    if ( '' !== $name ) {
+        $templates[] = "template-parts/{$slug}-{$name}.php";
+    }
+    
+    $templates[] = "template-parts/{$slug}.php";
+    
+    locate_template( $templates, true, false );
+}
+
+/**
+ * Register additional image sizes that can be overridden in child themes.
+ */
+function clean_theme_custom_image_sizes() {
+    add_image_size( 'clean-theme-large', 1920, 1080, true );
+    add_image_size( 'clean-theme-medium', 800, 600, true );
+    add_image_size( 'clean-theme-small', 400, 300, true );
+    add_image_size( 'clean-theme-thumbnail', 150, 150, true );
+}
+add_action( 'after_setup_theme', 'clean_theme_custom_image_sizes', 20 );
+
+/**
+ * Make customizer settings filterable for child themes.
+ * 
+ * Child themes can modify customizer settings using this filter.
+ */
+function clean_theme_get_customizer_defaults() {
+    $defaults = array(
+        'container_width'       => 'boxed',
+        'smooth_scroll'         => true,
+        'accent_color'          => '#0073aa',
+        'header_bg_color'       => '#ffffff',
+        'footer_bg_color'       => '#f5f5f5',
+        'color_scheme'          => 'light',
+        'header_logo_position'  => 'left',
+        'header_menu_position'  => 'inline',
+        'header_widgets_enable' => false,
+        'footer_style'          => 'style-1',
+        'footer_show_copyright' => true,
+        'footer_show_top_border'=> true,
+        'scroll_top_enable'     => true,
+        'scroll_top_icon'       => 'arrow',
+        'scroll_top_trigger'    => 500,
+        'fab_enable'            => false,
+        'fab_animation'         => 'fade',
+        'fab_position_bottom'   => 20,
+        'fab_position_right'    => 20,
+        'fab_gap'               => 10,
+        'enable_animations'     => true,
+    );
+    
+    /**
+     * Filter the default customizer values.
+     *
+     * @since 1.0.0
+     *
+     * @param array $defaults Array of default customizer values.
+     */
+    return apply_filters( 'clean_theme_customizer_defaults', $defaults );
+}
