@@ -1,23 +1,32 @@
 ```
-# WordPress specific
-wp-content/cache/
-wp-content/uploads/
-*.sql
-wp-config.php
-wp-config-sample.php
-
-# Dependencies
-node_modules/
-vendor/
-
-# Build artifacts
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
 dist/
 build/
-*.min.js
-*.min.css
+*.class
+*.exe
+*.dll
+*.so
+*.a
+*.out
 
-# Logs
+# Dependencies
+.venv/
+venv/
+node_modules/
+.mypy_cache/
+.pytest_cache/
+target/
+.gradle/
+
+# Logs and temp files
 *.log
+*.tmp
+*.swp
+*.swo
 
 # Environment
 .env
@@ -27,35 +36,15 @@ build/
 # Editors
 .vscode/
 .idea/
-*.swp
-*.swo
 
-# OS
+# System files
 .DS_Store
 Thumbs.db
 
-# Python (if any Python components)
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-.coverage
+# Coverage
+coverage/
 htmlcov/
-.coverage.*
-.pytest_cache/
-.mypy_cache/
-
-# Compiled and binary
-*.class
-*.o
-*.obj
-*.exe
-*.dll
-*.so
-*.a
-*.out
+.coverage
 
 # Compressed files
 *.zip
