@@ -30,6 +30,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php
 // Display floating buttons
 clean_theme_float_buttons();
+
+// Render modal windows
+do_action( 'theme_modals_render' );
 ?>
 
 <?php wp_footer(); ?>

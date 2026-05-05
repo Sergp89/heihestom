@@ -1,0 +1,689 @@
+/**
+ * Modal Styles
+ *
+ * Styles for modal windows and overlays.
+ *
+ * @package Clean_Theme
+ */
+
+/* ============================================
+   Modal Overlay
+   ============================================ */
+.ct-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ct-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Overlay types */
+.ct-modal-overlay.overlay-solid {
+    background: rgba(0, 0, 0, var(--overlay-opacity, 0.5));
+}
+
+.ct-modal-overlay.overlay-gradient {
+    background: linear-gradient(180deg, 
+        rgba(0, 0, 0, calc(var(--overlay-opacity, 0.5) * 0.8)) 0%, 
+        rgba(0, 0, 0, var(--overlay-opacity, 0.5)) 100%);
+}
+
+.ct-modal-overlay.overlay-glass {
+    background: rgba(255, 255, 255, calc(var(--overlay-opacity, 0.5) * 0.3));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.ct-modal-overlay.overlay-pattern {
+    background: rgba(0, 0, 0, var(--overlay-opacity, 0.5));
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ============================================
+   Modal Container
+   ============================================ */
+.ct-modal {
+    position: relative;
+    background-color: #ffffff;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: var(--modal-padding-desktop, 30px);
+    transform: scale(0.9) translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.ct-modal-overlay.active .ct-modal {
+    transform: scale(1) translateY(0);
+}
+
+/* Modal sizes */
+.ct-modal.modal-narrow {
+    max-width: 400px;
+    width: 90%;
+}
+
+.ct-modal.modal-medium {
+    max-width: 600px;
+    width: 90%;
+}
+
+.ct-modal.modal-wide {
+    max-width: 90%;
+    width: 90%;
+}
+
+.ct-modal.modal-fullscreen {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    border-radius: 0 !important;
+}
+
+/* Modal positions */
+.ct-modal.modal-center {
+    margin: auto;
+}
+
+.ct-modal.modal-right {
+    margin-left: auto;
+    margin-right: 0;
+    max-width: 500px;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+}
+
+.ct-modal.modal-left {
+    margin-right: auto;
+    margin-left: 0;
+    max-width: 500px;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+}
+
+.ct-modal.modal-bottom {
+    margin-top: auto;
+    margin-bottom: 0;
+    max-height: 80vh;
+    border-radius: 16px 16px 0 0;
+}
+
+/* ============================================
+   Modal Animations
+   ============================================ */
+/* Fade */
+.ct-modal.fade {
+    animation: ctModalFade 0.3s ease forwards;
+}
+
+@keyframes ctModalFade {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Slide from top */
+.ct-modal.slide-top {
+    animation: ctModalSlideTop 0.3s ease forwards;
+}
+
+@keyframes ctModalSlideTop {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Slide from bottom */
+.ct-modal.slide-bottom {
+    animation: ctModalSlideBottom 0.3s ease forwards;
+}
+
+@keyframes ctModalSlideBottom {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Slide from left */
+.ct-modal.slide-left {
+    animation: ctModalSlideLeft 0.3s ease forwards;
+}
+
+@keyframes ctModalSlideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slide from right */
+.ct-modal.slide-right {
+    animation: ctModalSlideRight 0.3s ease forwards;
+}
+
+@keyframes ctModalSlideRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Zoom */
+.ct-modal.zoom {
+    animation: ctModalZoom 0.3s ease forwards;
+}
+
+@keyframes ctModalZoom {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Bounce */
+.ct-modal.bounce {
+    animation: ctModalBounce 0.5s ease forwards;
+}
+
+@keyframes ctModalBounce {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ============================================
+   Close Button
+   ============================================ */
+.ct-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: all 0.3s ease;
+    z-index: 10;
+    padding: 0;
+}
+
+.ct-modal-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #000;
+    transform: rotate(90deg);
+}
+
+.ct-modal-close svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Close button positions */
+.ct-modal-close.close-outside-top-right {
+    top: -45px;
+    right: 0;
+    background: transparent;
+}
+
+.ct-modal-close.close-outside-top-right:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.ct-modal-close.close-center-bottom {
+    top: auto;
+    bottom: -45px;
+    right: 50%;
+    transform: translateX(50%);
+    background: transparent;
+}
+
+.ct-modal-close.close-center-bottom:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: translateX(50%) rotate(90deg);
+}
+
+/* ============================================
+   Modal Content
+   ============================================ */
+.ct-modal-content {
+    position: relative;
+}
+
+.ct-modal-title {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    color: var(--ct-color-heading, #1a1a1a);
+}
+
+.ct-modal-description {
+    margin-bottom: 1.5rem;
+    color: var(--ct-color-text, #333);
+    line-height: 1.6;
+}
+
+.ct-modal-body {
+    margin-bottom: 1.5rem;
+    color: var(--ct-color-text, #333);
+    line-height: 1.6;
+}
+
+.ct-modal-body > *:first-child {
+    margin-top: 0;
+}
+
+.ct-modal-body > *:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================
+   Modal Form Styles
+   ============================================ */
+.ct-modal-form {
+    margin-top: 1.5rem;
+}
+
+.ct-form-field {
+    margin-bottom: 1.25rem;
+}
+
+.ct-form-field.field-full {
+    width: 100%;
+}
+
+.ct-form-field.field-half {
+    width: calc(50% - 0.625rem);
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .ct-form-field.field-half {
+        width: 100%;
+    }
+}
+
+.ct-modal-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--ct-color-heading, #1a1a1a);
+    font-size: 0.875rem;
+}
+
+.ct-modal-form .required {
+    color: #dc3545;
+}
+
+.ct-modal-form input[type="text"],
+.ct-modal-form input[type="email"],
+.ct-modal-form input[type="tel"],
+.ct-modal-form input[type="url"],
+.ct-modal-form input[type="number"],
+.ct-modal-form textarea,
+.ct-modal-form select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: #fff;
+}
+
+.ct-modal-form input:focus,
+.ct-modal-form textarea:focus,
+.ct-modal-form select:focus {
+    outline: none;
+    border-color: var(--ct-color-primary, #0073aa);
+    box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1);
+}
+
+.ct-modal-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.ct-modal-form select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2.5rem;
+}
+
+/* Checkbox and Radio */
+.ct-option-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.ct-option-label input[type="checkbox"],
+.ct-option-label input[type="radio"] {
+    width: auto;
+    margin: 0;
+}
+
+.field-checkbox.orientation-horizontal,
+.field-radio.orientation-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.field-checkbox.orientation-horizontal .ct-option-label,
+.field-radio.orientation-horizontal .ct-option-label {
+    margin-bottom: 0;
+}
+
+.field-group-label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+/* File input */
+.ct-modal-form input[type="file"] {
+    padding: 0.5rem;
+    background: #f9f9f9;
+}
+
+/* Divider */
+.field-divider h3,
+.field-divider h4,
+.field-divider h5,
+.field-divider h6 {
+    margin: 1.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--ct-color-primary, #0073aa);
+}
+
+/* HTML field */
+.field-html {
+    margin-bottom: 1.25rem;
+}
+
+/* Form actions */
+.ct-modal-form-actions {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+/* Form response */
+.ct-form-response {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 4px;
+    display: none;
+}
+
+.ct-form-response.visible {
+    display: block;
+}
+
+.ct-form-response .success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 0.75rem;
+    border-radius: 4px;
+}
+
+.ct-form-response .error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 0.75rem;
+    border-radius: 4px;
+}
+
+/* ============================================
+   Modal Action Buttons
+   ============================================ */
+.ct-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+.ct-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.ct-btn .btn-icon {
+    display: flex;
+    align-items: center;
+}
+
+.ct-btn .btn-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Button styles */
+.ct-btn-primary {
+    background-color: var(--ct-color-primary, #0073aa);
+    color: #ffffff;
+}
+
+.ct-btn-primary:hover {
+    background-color: var(--ct-color-primary, #0073aa);
+    filter: brightness(0.9);
+}
+
+.ct-btn-secondary {
+    background-color: #6c757d;
+    color: #ffffff;
+}
+
+.ct-btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.ct-btn-outline {
+    background-color: transparent;
+    border-color: var(--ct-color-primary, #0073aa);
+    color: var(--ct-color-primary, #0073aa);
+}
+
+.ct-btn-outline:hover {
+    background-color: var(--ct-color-primary, #0073aa);
+    color: #ffffff;
+}
+
+.ct-btn-text {
+    background-color: transparent;
+    color: var(--ct-color-primary, #0073aa);
+    padding: 0.75rem 1rem;
+}
+
+.ct-btn-text:hover {
+    background-color: rgba(0, 115, 170, 0.1);
+}
+
+/* Button positions */
+.btn-position-left {
+    margin-right: auto;
+}
+
+.btn-position-right {
+    margin-left: auto;
+}
+
+.btn-position-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ============================================
+   Modal Trigger Button
+   ============================================ */
+.ct-modal-trigger {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--ct-color-primary, #0073aa);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ct-modal-trigger:hover {
+    background-color: var(--ct-color-primary, #0073aa);
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   Responsive Styles
+   ============================================ */
+@media (max-width: 768px) {
+    .ct-modal {
+        padding: var(--modal-padding-mobile, 20px);
+        max-width: 95%;
+    }
+    
+    .ct-modal.modal-right,
+    .ct-modal.modal-left {
+        max-width: 100%;
+        height: auto;
+        max-height: 90vh;
+    }
+    
+    .ct-modal-title {
+        font-size: 1.25rem;
+    }
+    
+    .ct-modal-actions {
+        flex-direction: column;
+    }
+    
+    .ct-btn {
+        width: 100%;
+    }
+    
+    .btn-position-left,
+    .btn-position-right,
+    .btn-position-center {
+        margin: 0;
+    }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    .ct-modal-overlay,
+    .ct-modal,
+    .ct-modal-close,
+    .ct-btn,
+    .ct-modal-trigger {
+        transition: none;
+        animation: none;
+    }
+}
+
+.ct-modal-overlay[aria-hidden="true"] {
+    display: none;
+}
+
+/* Focus trap indicator */
+.ct-modal-overlay.focused {
+    outline: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .ct-modal {
+        border: 2px solid #000;
+    }
+    
+    .ct-modal-close {
+        border: 2px solid currentColor;
+    }
+    
+    .ct-btn-outline {
+        border-width: 3px;
+    }
+}

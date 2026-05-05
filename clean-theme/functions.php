@@ -26,6 +26,8 @@ require_once CLEAN_THEME_DIR . '/inc/sanitization-callbacks.php';
 require_once CLEAN_THEME_DIR . '/inc/template-tags.php';
 require_once CLEAN_THEME_DIR . '/inc/customizer.php';
 require_once CLEAN_THEME_DIR . '/inc/ajax-handler.php';
+require_once CLEAN_THEME_DIR . '/inc/modal-renderer.php';
+require_once CLEAN_THEME_DIR . '/inc/modal-ajax-handler.php';
 
 /**
  * Theme setup
@@ -226,6 +228,14 @@ function clean_theme_scripts() {
         CLEAN_THEME_VERSION
     );
 
+    // Modal styles
+    wp_enqueue_style(
+        'clean-theme-modal',
+        CLEAN_THEME_URI . '/assets/css/modal-styles.css',
+        array( 'clean-theme-style' ),
+        CLEAN_THEME_VERSION
+    );
+
     // Google Fonts (if enabled)
     $font_body = get_theme_mod( 'font_body', 'system' );
     $font_headings = get_theme_mod( 'font_headings', 'system' );
@@ -266,7 +276,16 @@ function clean_theme_scripts() {
         true
     );
 
-    // Localize float buttons script with AJAX URL
+    // Modal manager script
+    wp_enqueue_script(
+        'clean-theme-modal-manager',
+        CLEAN_THEME_URI . '/assets/js/modal-manager.js',
+        array( 'jquery', 'clean-theme-float-buttons' ),
+        CLEAN_THEME_VERSION,
+        true
+    );
+
+    // Localize scripts with AJAX URL
     wp_localize_script( 'clean-theme-float-buttons', 'cleanThemeAjax', array(
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
         'nonce'   => wp_create_nonce( 'clean_theme_contact_form_nonce' ),

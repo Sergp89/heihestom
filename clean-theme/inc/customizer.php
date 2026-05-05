@@ -857,6 +857,37 @@ function clean_theme_customize_register( $wp_customize ) {
         'type'        => 'textarea',
         'description' => __( 'Add your custom CSS here', 'clean-theme' ),
     ) );
+    
+    // ============================================
+    // 8. MODAL WINDOWS
+    // ============================================
+    $wp_customize->add_panel( 'clean_theme_modals_panel', array(
+        'title'       => __( 'Modal Windows', 'clean-theme' ),
+        'priority'    => 65,
+        'description' => __( 'Configure modal popups with forms and custom content', 'clean-theme' ),
+    ) );
+    
+    // Modals Section (Repeater)
+    $wp_customize->add_section( 'clean_theme_modals_section', array(
+        'title'    => __( 'Modal Configurations', 'clean-theme' ),
+        'panel'    => 'clean_theme_modals_panel',
+        'priority' => 10,
+    ) );
+    
+    $wp_customize->add_setting( 'clean_theme_modals', array(
+        'default'           => array(),
+        'sanitize_callback' => 'clean_theme_sanitize_modals',
+        'transport'         => 'refresh',
+    ) );
+    
+    // Note: Repeater control requires Customizer Pro or similar plugin
+    // For now, we use a JSON textarea approach
+    $wp_customize->add_control( 'clean_theme_modals', array(
+        'label'       => __( 'Modal Configurations (JSON)', 'clean-theme' ),
+        'section'     => 'clean_theme_modals_section',
+        'type'        => 'textarea',
+        'description' => __( 'Enter modal configurations as JSON array. Each modal needs: id, title, enabled status. See documentation for full schema.', 'clean-theme' ),
+    ) );
 }
 add_action( 'customize_register', 'clean_theme_customize_register' );
 
