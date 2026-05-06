@@ -1,0 +1,125 @@
+/*
+Theme Name: Heyhestom
+Theme URI: https://example.com/heyhestom
+Author: Senior WP Developer
+Author URI: https://example.com
+Description: Профессиональная тема для стоматологической клиники "Хэйхэстом". Полная поддержка Gutenberg, Customizer, адаптивность и высокая производительность.
+Version: 1.0.0
+Requires at least: 6.4
+Tested up to: 6.5
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: heyhestom
+Tags: custom-background, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, block-styles, wide-blocks
+
+Heyhestom WordPress Theme, (C) 2024 Senior WP Developer
+Heyhestom is distributed under the terms of the GNU GPL.
+*/
+
+/* =========================================
+   1. CSS Variables & Reset
+   ========================================= */
+:root {
+    /* Colors - Default values, customizable via Customizer */
+    --primary: #0ea5e9;
+    --primary-dark: #0284c7;
+    --secondary: #10b981;
+    --dark: #0f172a;
+    --dark-blue: #0c4a6e;
+    --light: #f8fafc;
+    --gray: #64748b;
+    --white: #ffffff;
+    
+    /* Glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    
+    /* Typography */
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+    
+    /* Layout */
+    --container-width: 1280px;
+    --header-height: 70px;
+    --nav-height: 60px;
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    color: var(--dark);
+    background-color: var(--light);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: 0.3s ease;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+button, input, textarea, select {
+    font-family: inherit;
+    outline: none;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Accessibility: Skip to content */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary);
+    color: white;
+    padding: 8px;
+    z-index: 10000;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* WordPress Core Classes Alignment */
+.aligncenter { display: block; margin: 0 auto; }
+.alignleft { float: left; margin-right: 1em; }
+.alignright { float: right; margin-left: 1em; }
+.wp-caption { max-width: 100%; }
+.screen-reader-text {
+    position: absolute !important;
+    clip: rect(1px, 1px, 1px, 1px);
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
